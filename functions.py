@@ -118,27 +118,60 @@ def valid_entry_float(P):
 
 def sportsman_result(table, cup, category, sportsman, entry_1, entry_2, entry_3,
                      entry_4, entry_5, entry_6, entry_7, entry_total):
-    """ Принимает данные и выводит их на окно Атлет. """
+    """Принимает данные и выводит их на окно Атлет. Дополнительно публикует в Google Таблицу."""
 
-    # global athlete_window
     global in_admin_right
-    if check_athlete_window():
-        athlete_window.create_sportsmen()
-        sportsmen_position = None
-        for k in table.get_children(""):
-            if table.set(k, 1).upper() == sportsman.upper():
-                sportsmen_position = table.set(k, 0)
-                # print(f"Значение {table.set(k, 0)} совпало")
-            # else:
-                # print(f"Значение {sportsman} с таблицей НЕ совпало")
+    if not check_athlete_window():
+        return
 
-        # sportsmen_position = table.#1[sportsman]
-        # sportsmen_position = table.set(sportsman, 2)
+    # Создаём данные для публикации
+    sportsmen_data = [
+        {
+            "name": sportsman,
+            "point_1": entry_1,
+            "point_2": entry_2,
+            "point_3": entry_3,
+            "point_4": entry_4,
+            "point_5": entry_5,
+            "point_6": entry_6,
+            "penalty": entry_7,
+            "total": entry_total
+        }
+    ]
 
-        athlete_window.athlete_sportsmen.result_sportsmen(cup, category, sportsman, entry_1, entry_2,
-                                                          entry_3, entry_4, entry_5, entry_6, entry_7, entry_total,
-                                                          sportsmen_position)
-        create_messages_text(f"Спортсмен '{sportsman.title()}' успешно создан")
+    # Публикуем в Google Таблицу
+    try:
+        from google_sheets_publisher import GoogleSheetsPublisher
+        publisher = GoogleSheetsPublisher()
+        if publisher.test_connection():
+            publisher.publish_results(
+                cup=cup,
+                category=category,
+                sportsmen=sportsmen_data
+            )
+            create_messages_text(f"Результаты отправлены в Google Таблицу", True)
+        else:
+            create_messages_text(f"Не удалось подключиться к Google Таблице", False)
+    except Exception as e:
+        create_messages_text(f"Ошибка публикации в Google Таблицу: {e}", False)
+
+    # Остальная логика (вывод на экран)
+    athlete_window.create_sportsmen()
+    sportsmen_position = None
+    for k in table.get_children(""):
+        if table.set(k, 1).upper() == sportsman.upper():
+            sportsmen_position = table.set(k, 0)
+            # print(f"Значение {table.set(k, 0)} совпало")
+        # else:
+            # print(f"Значение {sportsman} с таблицей НЕ совпало")
+
+    # sportsmen_position = table.#1[sportsman]
+    # sportsmen_position = table.set(sportsman, 2)
+
+    athlete_window.athlete_sportsmen.result_sportsmen(cup, category, sportsman, entry_1, entry_2,
+                                                      entry_3, entry_4, entry_5, entry_6, entry_7, entry_total,
+                                                      sportsmen_position)
+    create_messages_text(f"Спортсмен '{sportsman.title()}' успешно создан")
 
 
 def click_wallpaper():

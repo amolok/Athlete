@@ -73,6 +73,7 @@ class PanelRightTools(tk.Frame):
         self.frame_city.pack(side=LEFT, pady=5, padx=5, anchor="w")
         self.entry_city = style_entry(self.frame_city, width=29)
         self.entry_city.pack(fill=BOTH, pady=5, padx=5, expand=True)
+        self.entry_city.focus()
 
         self.frame_year = style_entry_frame(self.frame_city_year, "Год", pady=5)
         self.frame_year.pack(side=LEFT, pady=5, padx=10, anchor="w")
@@ -106,7 +107,7 @@ class PanelRightTools(tk.Frame):
         self.container_point = style_container(self.frame)
         self.container_point.pack(side=TOP, fill=X, pady=5, padx=10, anchor="n", expand=True)
 
-        self.label_title = ttk.Label(self.container_point, text="Создать вкладку управления управления оценками",
+        self.label_title = ttk.Label(self.container_point, text="Создать вкладку управления оценками",
                                      background=FON_FIELD, foreground=BORDER)
         self.label_title.pack(side=TOP, pady=5, padx=10, anchor="w", expand=True)
 

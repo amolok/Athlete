@@ -126,7 +126,7 @@ def style_entry(frame, width=7, point=None):
         state = DISABLED
 
     entry = tk.Entry(frame, font="Arial 11 bold", justify=CENTER, bd=1, relief=SOLID, bg=ENTRY_BG,
-                     fg=ENTRY_TEXT_BEFORE, selectbackground=SELECT_BG_MARKER, takefocus=NO,
+                     fg=ENTRY_TEXT_BEFORE, selectbackground=SELECT_BG_MARKER, takefocus=True,
                      width=width, state=state)
     entry.config(disabledbackground=FON_FIELD)
 
